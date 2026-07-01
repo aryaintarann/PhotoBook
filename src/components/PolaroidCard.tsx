@@ -1,7 +1,6 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import type { MemoryWithUrl } from "@/types/memory";
@@ -27,9 +26,10 @@ function getMoodEmoji(mood: string | null) {
 
 type Props = {
   memory: MemoryWithUrl;
+  onClick: () => void;
 };
 
-export default function PolaroidCard({ memory }: Props) {
+export default function PolaroidCard({ memory, onClick }: Props) {
   const rotation = getRotation(memory.id);
   const moodEmoji = getMoodEmoji(memory.mood);
   const dateStr = format(new Date(memory.moment_date + "T00:00:00"), "d MMMM yyyy", {
@@ -37,9 +37,9 @@ export default function PolaroidCard({ memory }: Props) {
   });
 
   return (
-    <Link href={`/memory/${memory.id}`} className="block group">
+    <div onClick={onClick} className="block group cursor-pointer">
       <div
-        className="polaroid-hover cursor-pointer"
+        className="polaroid-hover"
         style={{ transform: `rotate(${rotation}deg)` }}
       >
         <div className="bg-white p-3 pb-14 shadow-md border border-gray-100 rounded-sm relative">
@@ -76,6 +76,6 @@ export default function PolaroidCard({ memory }: Props) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

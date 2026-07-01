@@ -1,4 +1,4 @@
-﻿"use server";
+"use server";
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -18,6 +18,8 @@ export async function uploadMemory(
   } = await supabase.auth.getUser();
 
   if (!user) return { error: "Kamu harus login dulu" };
+
+  console.log("Logged-in user details:", { id: user.id, email: user.email });
 
   const file = formData.get("photo") as File | null;
   const caption = (formData.get("caption") as string)?.trim();
@@ -39,7 +41,10 @@ export async function uploadMemory(
     .from("memories-photos")
     .upload(filename, file, { contentType: file.type });
 
-  if (uploadError) return { error: "Gagal upload foto. Coba lagi ya 🙏" };
+  if (uploadError) {
+    console.error("Upload error details:", uploadError);
+    return { error: `Gagal upload foto: ${uploadError.message} 🙏` };
+  }
 
   const { error: insertError } = await supabase.from("memories").insert({
     image_path: filename,

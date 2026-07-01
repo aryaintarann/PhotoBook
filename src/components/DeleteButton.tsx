@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import { deleteMemory } from "@/app/(protected)/memory/[id]/actions";
@@ -14,8 +14,8 @@ export default function DeleteButton({ memoryId, imagePath }: Props) {
 
   if (confirm) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-[#3d2b1f]">Yakin hapus?</span>
+      <div className="flex items-center gap-1.5 bg-red-50 border border-red-200 rounded-lg p-1.5 px-2.5">
+        <span className="text-xs text-[#3d2b1f] font-medium">Hapus?</span>
         <button
           onClick={() =>
             startTransition(async () => {
@@ -23,13 +23,13 @@ export default function DeleteButton({ memoryId, imagePath }: Props) {
             })
           }
           disabled={isPending}
-          className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50"
+          className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:opacity-50 font-medium"
         >
-          {isPending ? "Menghapus..." : "Ya, hapus"}
+          {isPending ? "..." : "Ya"}
         </button>
         <button
           onClick={() => setConfirm(false)}
-          className="px-3 py-1.5 text-sm border border-[#e8ddd0] rounded-md text-[#3d2b1f] hover:bg-gray-50"
+          className="px-2 py-1 text-xs border border-[#e8ddd0] rounded text-[#3d2b1f] bg-white hover:bg-gray-50 transition-colors"
         >
           Batal
         </button>
@@ -40,9 +40,10 @@ export default function DeleteButton({ memoryId, imagePath }: Props) {
   return (
     <button
       onClick={() => setConfirm(true)}
-      className="px-4 py-2 text-sm border border-red-200 text-red-600 rounded-md hover:bg-red-50 transition-colors"
+      title="Hapus Kenangan"
+      className="p-3 border shadow-sm border-red-200 text-red-600 rounded-full hover:bg-red-50 hover:scale-105 transition-all text-xl flex items-center justify-center bg-white"
     >
-      🗑️ Hapus
+      🗑️
     </button>
   );
 }

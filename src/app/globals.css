@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #f5f0e8;
@@ -60,3 +60,30 @@ body {
     position: relative;
   }
 }
+
+@keyframes polaroid-swing {
+  0% { transform: rotate(0deg) scale(1.02); }
+  25% { transform: rotate(2deg) scale(1.02); }
+  50% { transform: rotate(0deg) scale(1.02); }
+  75% { transform: rotate(-2deg) scale(1.02); }
+  100% { transform: rotate(0deg) scale(1.02); }
+}
+
+.polaroid-swing-hover {
+  transition: transform 0.3s ease-out;
+}
+
+/* For devices with a mouse (hover available) */
+@media (hover: hover) and (pointer: fine) {
+  .polaroid-swing-hover:hover {
+    animation: polaroid-swing 0.8s ease-in-out infinite;
+  }
+}
+
+/* For touch devices (no hover), animate continuously but gently */
+@media (hover: none), (pointer: coarse) {
+  .polaroid-swing-hover {
+    animation: polaroid-swing 3s ease-in-out infinite;
+  }
+}
+

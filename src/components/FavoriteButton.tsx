@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useTransition } from "react";
 import { toggleFavorite } from "@/app/(protected)/memory/[id]/actions";
@@ -17,14 +17,14 @@ export default function FavoriteButton({ memoryId, isFavorite }: Props) {
         startTransition(() => toggleFavorite(memoryId, isFavorite))
       }
       disabled={isPending}
-      className={`flex items-center gap-2 px-4 py-2 text-sm rounded-md border transition-colors disabled:opacity-50 ${
+      title={isFavorite ? "Hapus dari Favorit" : "Jadikan Favorit"}
+      className={`p-3 rounded-full border shadow-sm transition-all disabled:opacity-50 text-xl flex items-center justify-center bg-white hover:scale-105 ${
         isFavorite
           ? "bg-pink-50 border-pink-200 text-pink-600 hover:bg-pink-100"
           : "border-[#e8ddd0] text-[#3d2b1f] hover:bg-gray-50"
       }`}
     >
-      <span>{isFavorite ? "❤️" : "🤍"}</span>
-      <span>{isFavorite ? "Favorit" : "Jadikan favorit"}</span>
+      {isFavorite ? "❤️" : "🤍"}
     </button>
   );
 }

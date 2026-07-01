@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { updateMemory } from "@/app/(protected)/memory/[id]/actions";
 import SubmitButton from "./SubmitButton";
 import { MOOD_OPTIONS } from "@/types/memory";
@@ -8,22 +8,35 @@ import type { Memory } from "@/types/memory";
 
 type Props = {
   memory: Memory;
+  alwaysShowForm?: boolean;
+  onCancel?: () => void;
 };
 
-export default function EditMemoryForm({ memory }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
+export default function EditMemoryForm({ memory, alwaysShowForm = false, onCancel }: Props) {
+  const [isEditing, setIsEditing] = useState(alwaysShowForm);
 
   // bind id as the first extra arg; useActionState handles prevState + formData
   const updateWithId = updateMemory.bind(null, memory.id);
   const [state, formAction] = useActionState(updateWithId, null);
 
+  useEffect(() => {
+    if (state && !state.error) {
+      if (onCancel) {
+        onCancel();
+      } else {
+        setIsEditing(false);
+      }
+    }
+  }, [state, onCancel]);
+
   if (!isEditing) {
     return (
       <button
         onClick={() => setIsEditing(true)}
-        className="px-4 py-2 text-sm border border-[#e8ddd0] text-[#3d2b1f] rounded-md hover:bg-gray-50 transition-colors"
+        title="Edit Kenangan"
+        className="p-2.5 border border-[#e8ddd0] text-[#3d2b1f] rounded-lg hover:bg-gray-50 transition-colors text-xl flex items-center justify-center bg-white"
       >
-        ✏️ Edit kenangan
+        ✏️
       </button>
     );
   }
@@ -104,7 +117,13 @@ export default function EditMemoryForm({ memory }: Props) {
         <SubmitButton label="Simpan" pendingLabel="Menyimpan..." />
         <button
           type="button"
-          onClick={() => setIsEditing(false)}
+          onClick={() => {
+            if (onCancel) {
+              onCancel();
+            } else {
+              setIsEditing(false);
+            }
+          }}
           className="flex-1 py-3 px-4 border border-[#e8ddd0] rounded-lg text-[#3d2b1f] hover:bg-gray-50 transition-colors"
         >
           Batal

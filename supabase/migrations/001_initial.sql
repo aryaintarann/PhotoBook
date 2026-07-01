@@ -1,4 +1,4 @@
-﻿-- =============================================
+-- =============================================
 -- Kenangan Kita - Initial Database Schema
 -- Run this in Supabase SQL Editor
 -- =============================================
@@ -62,7 +62,7 @@ create policy "couple can read photos"
   to authenticated
   using (
     bucket_id = 'memories-photos'
-    and auth.uid() in (select user_id from couple_members)
+    and auth.uid() in (select user_id from public.couple_members)
   );
 
 create policy "couple can upload photos"
@@ -70,7 +70,7 @@ create policy "couple can upload photos"
   to authenticated
   with check (
     bucket_id = 'memories-photos'
-    and auth.uid() in (select user_id from couple_members)
+    and auth.uid() in (select user_id from public.couple_members)
   );
 
 create policy "couple can delete photos"
@@ -78,7 +78,7 @@ create policy "couple can delete photos"
   to authenticated
   using (
     bucket_id = 'memories-photos'
-    and auth.uid() in (select user_id from couple_members)
+    and auth.uid() in (select user_id from public.couple_members)
   );
 
 -- =============================================

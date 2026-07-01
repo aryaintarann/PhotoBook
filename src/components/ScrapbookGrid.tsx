@@ -1,6 +1,8 @@
-﻿"use client";
+"use client";
 
+import { useState } from "react";
 import PolaroidCard from "./PolaroidCard";
+import MemoryDetailModal from "./MemoryDetailModal";
 import type { MemoryWithUrl } from "@/types/memory";
 
 type Props = {
@@ -8,6 +10,10 @@ type Props = {
 };
 
 export default function ScrapbookGrid({ memories }: Props) {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const selectedMemory = memories.find((m) => m.id === selectedId) || null;
+
   if (memories.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -25,10 +31,23 @@ export default function ScrapbookGrid({ memories }: Props) {
   }
 
   return (
-    <div className="masonry">
-      {memories.map((memory) => (
-        <PolaroidCard key={memory.id} memory={memory} />
-      ))}
-    </div>
+    <>
+      <div className="masonry">
+        {memories.map((memory) => (
+          <PolaroidCard
+            key={memory.id}
+            memory={memory}
+            onClick={() => setSelectedId(memory.id)}
+          />
+        ))}
+      </div>
+
+      {selectedMemory && (
+        <MemoryDetailModal
+          memory={selectedMemory}
+          onClose={() => setSelectedId(null)}
+        />
+      )}
+    </>
   );
 }
